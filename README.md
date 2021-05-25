@@ -12,5 +12,5 @@
 - [x] Créer l'IA
 - [ ] Intégrer l'IA a la GUI (GUI)
 
-![Capture d'écran](/Images/présentation.png)
+![Capture d'écran](/Images/boardPrésentation1.png)
 
