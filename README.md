@@ -2,6 +2,7 @@
 ### Projet, Réaliser par Hugo, Robin et Pablo
 **Dépendences:**
 * *pip install pygame*
+* *pip install sklearn*
 
 
 - [x] Créer le système de Morpions (sans GUI)
