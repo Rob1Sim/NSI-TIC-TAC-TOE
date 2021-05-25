@@ -1,4 +1,4 @@
-# NSI-TIC-TAC-TOE VS IA#
+# NSI-TIC-TAC-TOE VS IA
 ### Projet, Réaliser par Hugo, Robin et Pablo
 **Dépendences:**
 * *pip install pygame*
@@ -12,3 +12,5 @@
 - [x] Créer l'IA
 - [ ] Intégrer l'IA a la GUI (GUI)
 
+![Capture d'écran](/Images/présentation.png)
+Format: ![Alt Text](url)
