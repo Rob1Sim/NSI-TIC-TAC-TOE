@@ -1,4 +1,4 @@
-# NSI-TIC-TAC-TOE VS IA
-###Projet, Réaliser par Hugo, Robin et Pablo
-#####*pip install pygame*
+# NSI-TIC-TAC-TOE VS IA#
+### Projet, Réaliser par Hugo, Robin et Pablo
+##### *pip install pygame*
 
