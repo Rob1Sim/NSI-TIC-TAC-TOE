@@ -1,5 +1,8 @@
 #Game state class 
-#Define the game statement
+#Define the game statement => The menu screen => begin, 
+# when its the player turn => playerTurn
+#When its the bot turn => botTurn
+#When someone win or it's a draw => end
 class GameState:
     def __init__(self) :
         self.__sAllgameState = ["begin","playerTurn","botTurn","end"]

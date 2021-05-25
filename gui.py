@@ -1,23 +1,23 @@
+import GameState as gm
+import win
 
 import pygame
-import GameState as gm
-from pygame import display
-from pygame import color
-from pygame.sprite import groupcollide
 import random
 
 #Instantiation
 pygame.init()
 gameState = gm.GameState()
+winSc = win.win()
 
-gameState.set_gameState("playerTurn")
+
+gameState.set_gameState("playerTurn")#TODO: Create a menu screen
 
 
 
 
 #Function
 
-    #Function => draw the grid an the screen
+    #Function => draw the grid on the screen
 def renderGrid(gridImage,gridImageX,gridImageY):
     screen.blit(gridImage,(gridImageX,gridImageY))
 
@@ -42,13 +42,10 @@ def debug_Clicker_box(posX,posY,COLOR,shape):
 
     #Function => Verified if the click of the player is good
 def isClicklable(grid,cliclPos,shape,gCheck,gridImage,pion):
-    isGood= 0
-    
-    
-    
-        #If the player click in a checkbox, and if the checkbox is not already checked and if its the player turn
+
+        #If the player click in a checkbox, and if the checkbox is not already checked and if its the player turn then we can draw his sign
     for i in range (0,len(grid)):
-        if (cliclPos[0]>= grid[i][0][0] and cliclPos[1]>= grid[i][0][1]) and (cliclPos[0]<= grid[i][0][0]+shape[0] and cliclPos[1]<= grid[i][0][1]+shape[1]) and gCheck[i] == 0 and gameState.get_Current_State() == "playerTurn":
+        if (cliclPos[0]>= grid[i][0][0] and cliclPos[1]>= grid[i][0][1]) and (cliclPos[0]<= grid[i][0][0]+shape[0] and cliclPos[1]<= grid[i][0][1]+shape[1]) and gCheck[i] == 0 :#and gameState.get_Current_State()=="playerTurn":
             gCheck[i] =1
             drawCrossOrCerlce(pion,gridImage[i][0][0],gridImage[i][0][1])
             gameState.set_gameState("botTurn")
@@ -58,7 +55,9 @@ def isClicklable(grid,cliclPos,shape,gCheck,gridImage,pion):
     
 
 #def botTurn():
-    #TODO Algo of the bot
+    #TODO Algo of the bot =>Pablo
+
+
 
 
 #Screen parameter
@@ -68,11 +67,13 @@ screen_shape =  [800,600]
 
 # Set up the drawing window
 screen = pygame.display.set_mode(screen_shape)
+    #Flll the color of the background
 screen.fill(backColor)
 
 
 #Title and logo
 #Logo by : https://www.freepik.com
+    #load the logo and set the name
 pygame.display.set_caption("Tic-Tac-Toe")
 icon = pygame.image.load('Images/TTT.png')  
 pygame.display.set_icon(icon)
@@ -86,16 +87,21 @@ gridImage = pygame.image.load('Images/grid.png')
 gridImageX = 125
 gridImageY =23
 
+
+
 #Cercle and Cross
 CC_shape = (100,100)
-
+    #Every coordonate and scale of each clickable component
 gridPosCC= [[(156,78),CC_shape],[(350,78),CC_shape],[(557,78),CC_shape],
           [(156,250),CC_shape],[(350,250),CC_shape],[(557,250),CC_shape],
-          [(156,448),CC_shape],[(350,418),CC_shape],[(557,448),CC_shape]]
+          [(156,448),CC_shape],[(350,448),CC_shape],[(557,448),CC_shape]]
 
 
 
 #Tic-Tac-Toe logic
+pScore = 0
+winner = "nobody"
+
     #Choose wich (cross or cercle) the player had
 whoStart = random.randrange(1,3)
 if whoStart == 1:
@@ -125,24 +131,45 @@ gridCheck = [ 0,0,0
 
 
 running = True
+    #Inifite loop
 while running:
 
     # Did the user click the window close button?
+        #Event loop check the event of the user
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            #Click event
         if event.type == pygame.MOUSEBUTTONUP:
             c_pos = pygame.mouse.get_pos()
-            isClicklable(gridPosClick,c_pos,shapeClick,gridCheck,gridPosCC,pion)
+                #If someone win or if it's a draw
+            if gameState.get_Current_State() != "end":
+                isClicklable(gridPosClick,c_pos,shapeClick,gridCheck,gridPosCC,pion)
             
-            #TODO: Fonction qui récupère la pos du click vérifie les coordonée, si il sont bon alors il ajoute un cercle/croix
-    renderGrid(gridImage,gridImageX,gridImageY)
+            #if the board need to be display (not on the begining or on the end)
+    if gameState.get_Current_State() != "end" and gameState.get_Current_State() != "begin":
+        renderGrid(gridImage,gridImageX,gridImageY)
+        winner,endGameState = winSc.winCond(gridCheck,pScore,winner)
+        if endGameState == "end":
+            gameState.set_gameState(endGameState) 
+        
     
-    #Update the screen every
+    if gameState.get_Current_State() == "end":
+        
+        
+        if winner == "player":
+            winSc.playerWin(screen)
+            
+        if winner == "bot":
+            winSc.botWin(screen)
+        elif winner == "draw" :
+            winSc.draw(screen)
+            
+    #Update the screen every frame
     pygame.display.update()
 
 
 
 print(gridCheck)
 
-pygame.quit()
+pygame.quit()#Desalocate the memory 
