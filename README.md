@@ -13,4 +13,4 @@
 - [ ] Intégrer l'IA a la GUI (GUI)
 
 ![Capture d'écran](/Images/présentation.png)
-Format: ![Alt Text](url)
+
