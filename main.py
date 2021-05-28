@@ -9,6 +9,7 @@ import math
 pygame.init()
 gameState = gm.GameState()
 winSc = win.win()
+winBot = win.win()
 
 
 gameState.set_gameState("playerTurn")#TODO: Create a menu screen
@@ -50,6 +51,7 @@ def isClicklable(grid,cliclPos,shape,gCheck,gridImage,pion):
             gCheck[i] =1
             drawCrossOrCerlce(pion,gridImage[i][0][0],gridImage[i][0][1])
             gameState.set_gameState("botTurn")
+            print(gameState.get_Current_State())
         
             
         
@@ -58,14 +60,51 @@ def isClicklable(grid,cliclPos,shape,gCheck,gridImage,pion):
 #def botTurn():
     #TODO Algo of the bot =>Pablo
 
-def miniMax(grid):
-    return 1
+
+        
+
+
+def miniMax(board, depth, isMax):
+    
+    
+    winner1= winBot.winCondBot(board)
+    
+    bestScore = -math.inf
+    score = 0
+    if winner1[1] =="end":
+        
+        return winBot.get_is_win_winner_point()
+        
+    if isMax:
+        
+        for i in range(0,len(board)):
+            if board[i] == 0:
+                board[i] = -1
+                score = miniMax(board,depth+1,False)
+                
+                board[i] = 0
+                bestScore = max(score, bestScore)
+                
+        return bestScore
+        
+    else:
+        bestScore = math.inf
+        
+        for i in range(0, len(board)):
+            if board[i] == 0:
+                board[i] = 1
+                score = miniMax(board, depth+1, True)
+                board[i] = 0
+                bestScore = min(score, bestScore)
+                
+        return bestScore
+        
 
 
 def botTurn(grid,board,enemyPion):
     bestScore = -math.inf
-    score = miniMax(grid)
-    
+    score = miniMax(grid,0,False)
+    print(score)
     for i in range(0,len(grid)):
         if grid[i] == 0:
             if score > bestScore:
@@ -73,6 +112,7 @@ def botTurn(grid,board,enemyPion):
                 drawCrossOrCerlce(enemyPion,board[i][0][0],board[i][0][1])
                 grid[i] = -1
     gameState.set_gameState("playerTurn")
+    print(gameState.get_Current_State())
 
 
 #Screen parameter
@@ -120,9 +160,13 @@ winner = "nobody"
     #Choose wich (cross or cercle) the player had
 whoStart = random.randrange(1,3)
 if whoStart == 1:
+    firstT = whoStart
+    
+    #gameState.set_gameState("playerTurn")
     pion = pygame.image.load('Images/Cross.png')
     enemyPion = pygame.image.load('Images/Round.png')
 else:
+    #gameState.set_gameState("botTurn")
     pion = pygame.image.load('Images/Round.png')
     enemyPion = pygame.image.load('Images/Cross.png')
 
@@ -160,8 +204,10 @@ while running:
         if event.type == pygame.MOUSEBUTTONUP:
             c_pos = pygame.mouse.get_pos()
                 #If someone win or if it's a draw
-            if gameState.get_Current_State() != "end":
+            if gameState.get_Current_State() != "end" :
+                gameState.set_gameState("botTurn")
                 isClicklable(gridPosClick,c_pos,shapeClick,gridCheck,gridPosCC,pion)
+                
             
             #if the board need to be display (not on the begining or on the end)
     if gameState.get_Current_State() != "end" and gameState.get_Current_State() != "begin":
@@ -170,7 +216,7 @@ while running:
             botTurn(gridCheck, gridPosCC,enemyPion)
         
         
-        winner,endGameState = winSc.winCond(gridCheck,pScore,winner)
+        winner,endGameState = winSc.winCond(gridCheck,winner)
         if endGameState == "end":
             gameState.set_gameState(endGameState) 
         
