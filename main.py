@@ -3,6 +3,7 @@ import win
 
 import pygame
 import random
+import math
 
 #Instantiation
 pygame.init()
@@ -57,7 +58,21 @@ def isClicklable(grid,cliclPos,shape,gCheck,gridImage,pion):
 #def botTurn():
     #TODO Algo of the bot =>Pablo
 
+def miniMax(grid):
+    return 1
 
+
+def botTurn(grid,board,enemyPion):
+    bestScore = -math.inf
+    score = miniMax(grid)
+    
+    for i in range(0,len(grid)):
+        if grid[i] == 0:
+            if score > bestScore:
+                bestScore = score
+                drawCrossOrCerlce(enemyPion,board[i][0][0],board[i][0][1])
+                grid[i] = -1
+    gameState.set_gameState("playerTurn")
 
 
 #Screen parameter
@@ -106,8 +121,10 @@ winner = "nobody"
 whoStart = random.randrange(1,3)
 if whoStart == 1:
     pion = pygame.image.load('Images/Cross.png')
+    enemyPion = pygame.image.load('Images/Round.png')
 else:
     pion = pygame.image.load('Images/Round.png')
+    enemyPion = pygame.image.load('Images/Cross.png')
 
 
     #Cube scale in pixels
@@ -133,7 +150,7 @@ gridCheck = [ 0,0,0
 running = True
     #Inifite loop
 while running:
-
+    
     # Did the user click the window close button?
         #Event loop check the event of the user
     for event in pygame.event.get():
@@ -149,6 +166,10 @@ while running:
             #if the board need to be display (not on the begining or on the end)
     if gameState.get_Current_State() != "end" and gameState.get_Current_State() != "begin":
         renderGrid(gridImage,gridImageX,gridImageY)
+        if gameState.get_Current_State() == "botTurn":
+            botTurn(gridCheck, gridPosCC,enemyPion)
+        
+        
         winner,endGameState = winSc.winCond(gridCheck,pScore,winner)
         if endGameState == "end":
             gameState.set_gameState(endGameState) 
