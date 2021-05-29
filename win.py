@@ -14,6 +14,8 @@ class win:
     def __init__(self):
         self.__isWin = False
         self.__winner = "nobody"
+        self.__winBot = "null"
+        self.__scoreB = 0
     def playerWin(self,screen):
         #TODO: Button to retry
         #TODO: Button to quit
@@ -43,6 +45,18 @@ class win:
         if self.__winner == "bot":
             return -1
     
+    def get_winBot(self):
+        return self.__winBot
+    
+    def set_winBot(self,winner):
+        self.__winBot = winner
+    
+    def get_scoreB(self):
+        return self.__scoreB
+
+    def set_scoreB(self, score):
+        self.__scoreB = score
+    
         #Function => verified if someone win
     def winCond(self,grilleC,winner):
         self.__winner = winner
@@ -70,23 +84,27 @@ class win:
                 return self.__winner, ""
             
         
-    def winCondBot(self, grilleC):
+    def win_string(self, grilleC):
             
-            if (grilleC[0] == 1 and grilleC[1] == 1 and grilleC[2] == 1) or (grilleC[3] == 1 and grilleC[4] == 1 and grilleC[5] == 1) or (grilleC[6] == 1 and grilleC[7] == 1 and grilleC[8] == 1) or (grilleC[0] == 1 and grilleC[4] == 1 and grilleC[8] == 1) or (grilleC[2] == 1 and grilleC[4] == 1 and grilleC[6] == 1) or (grilleC[0] == 1 and grilleC[3] == 1 and grilleC[6] == 1) or (grilleC[1] == 1 and grilleC[4] == 1 and grilleC[7] == 1) or (grilleC[2] == 1 and grilleC[5] == 1 and grilleC[8] == 1):
-
-                return "end",1
-            if (grilleC[0] == -1 and grilleC[1] == -1 and grilleC[2] == -1) or (grilleC[3] == -1 and grilleC[4] == -1 and grilleC[5] == -1) or (grilleC[6] == -1 and grilleC[7] == -1 and grilleC[8] == -1) or (grilleC[0] == -1 and grilleC[4] == -1 and grilleC[8] == -1) or (grilleC[2] == -1 and grilleC[4] == -1 and grilleC[6] == -1) or (grilleC[0] == -1 and grilleC[3] == -1 and grilleC[6] == -1) or (grilleC[1] == -1 and grilleC[4] == -1 and grilleC[7] == -1) or (grilleC[2] == -1 and grilleC[5] == -1 and grilleC[8] == -1):
-
-                return "end",-1
+        if (grilleC[0] == "X" and grilleC[1] == "X" and grilleC[2] == "X") or (grilleC[3] == "X" and grilleC[4] == "X" and grilleC[5] == "X") or (grilleC[6] == "X" and grilleC[7] == "X" and grilleC[8] == "X") or (grilleC[0] == "X" and grilleC[4] == "X" and grilleC[8] == "X") or (grilleC[2] == "X" and grilleC[4] == "X" and grilleC[6] == "X") or (grilleC[0] == "X" and grilleC[3] == "X" and grilleC[6] == "X") or (grilleC[1] == "X" and grilleC[4] == "X" and grilleC[7] == "X") or (grilleC[2] == "X" and grilleC[5] == "X" and grilleC[8] == "X"):
+                self.__isWin = True
+                self.set_winBot("player")
+                self.set_scoreB(1)
+                return "end"
+        if (grilleC[0] == "O" and grilleC[1] == "O" and grilleC[2] == "O") or (grilleC[3] == "O" and grilleC[4] == "O" and grilleC[5] == "O") or (grilleC[6] == "O" and grilleC[7] == "O" and grilleC[8] == "O") or (grilleC[0] == "O" and grilleC[4] == "O" and grilleC[8] == "O") or (grilleC[2] == "O" and grilleC[4] == "O" and grilleC[6] == "O") or (grilleC[0] == "O" and grilleC[3] == "O" and grilleC[6] == "O") or (grilleC[1] == "O" and grilleC[4] == "O" and grilleC[7] == "O") or (grilleC[2] == "O" and grilleC[5] == "O" and grilleC[8] == "O"):
+                self.__isWin = True
+                self.set_winBot("bot")
+                self.set_scoreB(-1)
+                return "end"
                 #We are checking if its a draw or not
-            if self.__isWin == False:
+        if self.__isWin == False:
                 compt = 0
                 for i in range(0, len(grilleC)):
-                    if grilleC[i] != 0:
+                    if grilleC[i] != "":
                         compt += 1
                 if compt == len(grilleC):
-                    
-                    return "end",0
+                    self.set_winBot("draw")
+                    return "end"
                 else:
                     
-                    return "nobody",0
+                    return "nobody"

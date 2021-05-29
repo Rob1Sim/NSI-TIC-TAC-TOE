@@ -1,5 +1,6 @@
 import GameState as gm
 import win
+import minimax 
 
 import pygame
 import random
@@ -60,68 +61,25 @@ def isClicklable(grid,cliclPos,shape,gCheck,gridImage,pion):
 #def botTurn():
     #TODO Algo of the bot =>Pablo
 
-
-        
-
-
-def miniMax(board, depth, isMax):
-    print(board)
-    
-    winner1= winBot.winCondBot(board)
-    
-    bestMove = -math.inf
-    
-    score = 0
-    if winner1[0] =="end" and winner1[1]!=0:
-        
-        return winner1[1]
-        
-    if isMax:
-        
-        for i in range(0,len(board)):
-            if board[i] == 0:
-                board[i] = -1
-                score = miniMax(board,depth+1,False)
-                
-                board[i] = 0
-                bestMove = max(score, bestMove)
-                
-        return bestMove
-        
-    else:
-        bestMove = math.inf
-        
-        for i in range(0, len(board)):
-            if board[i] == 0:
-                board[i] = 1
-                score = miniMax(board, depth+1, True)
-                board[i] = 0
-                bestMove = min(score, bestMove)
-                
-        return bestMove
-        
-
-
-def botTurn(grid,board,enemyPion):
-    bestScore = -math.inf
-    for i in range(0,len(grid)):
-        
-        if grid[i] == 0:
-            grid[i] = -1
-            
-            score = miniMax(grid, 0, False)
-            grid[i] = 0
-            if score > bestScore:
-                bestScore = score
-                print(bestScore)
-                drawCrossOrCerlce(enemyPion,board[i][0][0],board[i][0][1])
-                grid[i] = -1
-            else:
-                bestScore = bestScore
-                
-                grid[i] = 0
+def botTurn(grid, board, enemyPion):
+    minimax_algo = minimax.Minimax(gridCheck)
+    grid = minimax_algo.all_in()
+    for i in range(len(grid)):
+        if grid[i] == -1:
+            drawCrossOrCerlce(enemyPion, board[i][0][0], board[i][0][1])
+    print(grid)
     gameState.set_gameState("playerTurn")
     print(gameState.get_Current_State())
+        
+
+
+
+
+
+        
+
+
+
 
 
 #Screen parameter
@@ -195,6 +153,12 @@ gridCheck = [ 0,0,0
              ,0,0,0
              ,0,0,0
              ]
+
+
+
+
+
+
 
 
 #debug_Clicker(gridPosClick,COLOR,shapeClick)
