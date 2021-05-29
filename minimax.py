@@ -34,10 +34,12 @@ class Minimax:
         self.__boardString[index] = "O"
     
     def __make_move_player(self, index,isPlayer):
-        if isPlayer:
-            self.__boardString[index] = "X"
-        else:
+        if isPlayer == 0:
             self.__boardString[index] = "O"
+            
+        if isPlayer == 1:
+            self.__boardString[index] = "X"
+            print("x0123456")
     
     
     def  __undo_move(self,index):
@@ -46,6 +48,7 @@ class Minimax:
     def __get_possible_move(self):
        final = self.__boardString
        return final
+
     def  __isFull(self):
         cmpt =0
         for i in range(len(self.__get_possible_move())):
@@ -57,6 +60,10 @@ class Minimax:
         else:
             return True         
     def __minimax_recursion(self,isMax):
+        if isMax == 0:
+            isMax = 1
+        if isMax == 1:
+            isMax =0
         who_win = win_class.win_string(self.__boardString)
         if who_win =="end":
             if  win_class.get_winBot() == "draw":
@@ -66,16 +73,15 @@ class Minimax:
             if win_class.get_winBot() == "player":
                 return -1
         scores = []
-        for move in range(len(self.__get_possible_move())):
+        for move in range(0,len(self.__get_possible_move())):
+            
             if self.__get_possible_move()[move] == "":
-                if isMax:
-                    self.__make_move_player(move,isMax)
-                else:
-                    self.__make_move_player(move, not isMax)
-                scores.append(self.__minimax_recursion(not isMax))
+                self.__make_move_player(move, isMax)
+                scores.append(self.__minimax_recursion(isMax))
                 self.__undo_move(move)
-                print(scores)
-                return max(scores) if isMax else min(scores)
+            print(isMax)    
+            
+        return max(scores) if isMax else min(scores)
             
         
             
@@ -88,7 +94,7 @@ class Minimax:
             for move in range(len(self.__get_possible_move())):
                 if self.__get_possible_move()[move] == "":
                     self.__make_move(move)
-                    score = self.__minimax_recursion(False)
+                    score = self.__minimax_recursion(1)
                     self.__undo_move(move)
                     if score > bestScore:
                         bestScore = score
