@@ -65,15 +65,16 @@ def isClicklable(grid,cliclPos,shape,gCheck,gridImage,pion):
 
 
 def miniMax(board, depth, isMax):
-    
+    print(board)
     
     winner1= winBot.winCondBot(board)
     
-    bestScore = -math.inf
+    bestMove = -math.inf
+    
     score = 0
-    if winner1[1] =="end":
+    if winner1[0] =="end" and winner1[1]!=0:
         
-        return winBot.get_is_win_winner_point()
+        return winner1[1]
         
     if isMax:
         
@@ -83,34 +84,42 @@ def miniMax(board, depth, isMax):
                 score = miniMax(board,depth+1,False)
                 
                 board[i] = 0
-                bestScore = max(score, bestScore)
+                bestMove = max(score, bestMove)
                 
-        return bestScore
+        return bestMove
         
     else:
-        bestScore = math.inf
+        bestMove = math.inf
         
         for i in range(0, len(board)):
             if board[i] == 0:
                 board[i] = 1
                 score = miniMax(board, depth+1, True)
                 board[i] = 0
-                bestScore = min(score, bestScore)
+                bestMove = min(score, bestMove)
                 
-        return bestScore
+        return bestMove
         
 
 
 def botTurn(grid,board,enemyPion):
     bestScore = -math.inf
-    score = miniMax(grid,0,False)
-    print(score)
     for i in range(0,len(grid)):
+        
         if grid[i] == 0:
+            grid[i] = -1
+            
+            score = miniMax(grid, 0, False)
+            grid[i] = 0
             if score > bestScore:
                 bestScore = score
+                print(bestScore)
                 drawCrossOrCerlce(enemyPion,board[i][0][0],board[i][0][1])
                 grid[i] = -1
+            else:
+                bestScore = bestScore
+                
+                grid[i] = 0
     gameState.set_gameState("playerTurn")
     print(gameState.get_Current_State())
 

@@ -74,10 +74,10 @@ class win:
             
             if (grilleC[0] == 1 and grilleC[1] == 1 and grilleC[2] == 1) or (grilleC[3] == 1 and grilleC[4] == 1 and grilleC[5] == 1) or (grilleC[6] == 1 and grilleC[7] == 1 and grilleC[8] == 1) or (grilleC[0] == 1 and grilleC[4] == 1 and grilleC[8] == 1) or (grilleC[2] == 1 and grilleC[4] == 1 and grilleC[6] == 1) or (grilleC[0] == 1 and grilleC[3] == 1 and grilleC[6] == 1) or (grilleC[1] == 1 and grilleC[4] == 1 and grilleC[7] == 1) or (grilleC[2] == 1 and grilleC[5] == 1 and grilleC[8] == 1):
 
-                return "end"
+                return "end",1
             if (grilleC[0] == -1 and grilleC[1] == -1 and grilleC[2] == -1) or (grilleC[3] == -1 and grilleC[4] == -1 and grilleC[5] == -1) or (grilleC[6] == -1 and grilleC[7] == -1 and grilleC[8] == -1) or (grilleC[0] == -1 and grilleC[4] == -1 and grilleC[8] == -1) or (grilleC[2] == -1 and grilleC[4] == -1 and grilleC[6] == -1) or (grilleC[0] == -1 and grilleC[3] == -1 and grilleC[6] == -1) or (grilleC[1] == -1 and grilleC[4] == -1 and grilleC[7] == -1) or (grilleC[2] == -1 and grilleC[5] == -1 and grilleC[8] == -1):
 
-                return "end"
+                return "end",-1
                 #We are checking if its a draw or not
             if self.__isWin == False:
                 compt = 0
@@ -86,7 +86,7 @@ class win:
                         compt += 1
                 if compt == len(grilleC):
                     
-                    return "end"
+                    return "end",0
                 else:
                     
-                    return "nobody"
+                    return "nobody",0
